@@ -1,0 +1,10 @@
+*~
+\#*\#
+*.o
+parser.output
+*.mtl
+*.obj
+lex.yy.c
+parser.tab.c
+parser.tab.h
+parser
