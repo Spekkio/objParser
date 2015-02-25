@@ -10,9 +10,11 @@ extern unsigned int line;
 
 "v"       { return VERT; }
 "vn"      { return NORMAL; }
+"vt"      { return TEXTURE; }
 "o"       { return OBJECT; }
 "s"       { return SETTING; }
 "f"       { return FACE; }
+"l"       { return ELL; }
 "mtllib"  { return MTLLIB; }
 "usemtl"  { return USEMTL; }
 
