@@ -17,6 +17,7 @@ extern unsigned int line;
 "l"       { return ELL; }
 "mtllib"  { return MTLLIB; }
 "usemtl"  { return USEMTL; }
+"/"       { return SLASH; }
 
 [-]{0,1}[0-9.]+     { yylval.number = atof(yytext); return NUMBER; }
 [A-Za-z0-9._]+      { yylval.string = yytext; return STRING; }
