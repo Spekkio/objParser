@@ -1,6 +1,6 @@
 target: parser
 
-OBJS=func.o
+OBJS=func.o linkedlist.o
 
 lex.yy.c: parser.l parser.tab.h
 	flex parser.l
@@ -13,6 +13,9 @@ parser: lex.yy.c $(OBJS)
 
 func.o: func.c func.h
 	gcc -g -Wall -c func.c
+
+linkedlist.o: linkedlist.c linkedlist.h
+	gcc -g -Wall -c linkedlist.c
 
 clear:
 	rm -rf parser lex.yy.c bparser parser.tab.c parser.tab.h *~ \#*\#
