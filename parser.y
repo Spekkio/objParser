@@ -3,6 +3,7 @@
 #include "func.h"
 #include "linkedlist.h"
 #include "object.h"
+#include "verticeList.h"
 
 unsigned int line = 0;
 unsigned int v_num = 0;
@@ -11,7 +12,11 @@ extern char *yytext;
 void yyerror(char *s);
 
 linkedList * objectList;
+linkedList * vertices;
 linkedListNode * objectListNode;
+linkedListNode * verticesListNode;
+
+vertice tempVertice;
 
 %}
 
@@ -47,7 +52,22 @@ line:
   printf("/* New object: %s */\n", $2);
   objectListNode = addNewNode(objectList);
  }
-| VERT NUMBER NUMBER NUMBER { printf("#%u ",++v_num); printf("Vertex: %f %f %f\n",$2,$3,$4); }
+| VERT NUMBER NUMBER NUMBER { 
+  printf("#%u ",++v_num); printf("Vertex: %f %f %f\n",$2,$3,$4);
+
+  tempVertice.x = $2;
+  tempVertice.y = $3;
+  tempVertice.z = $4;
+
+  if(objectListNode!=0) {
+    vertices = getVerticeList(objectListNode);
+    if(vertices!=0) {
+      verticesListNode = addNewNode(vertices);
+      storeVerticeData(verticesListNode, tempVertice);
+    } else yyerror("Error: Cannot store vertice data\n");
+  } else yyerror("Error: No object was defined\n");
+
+ }
 | FACE numberlist { printf("face\n"); /*printf("Face(4) %f %f %f\n",$2,$3,$4);*/ }
 | ELL NUMBER NUMBER { /**/ }
 | TEXTURE NUMBER NUMBER {   }
@@ -72,7 +92,7 @@ int main(int argc, char **argv)
     }
   yyparse();
 
-  printf("List: %u\n",getNumNodes(objectList));
+  printf("List: %u objects\n",getNumNodes(objectList));
   freeList(objectList);
 
   return 0;

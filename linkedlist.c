@@ -91,3 +91,23 @@ void freeList(void * list_in)
     free(list);
   }
 }
+
+void * getNodeDataPtr(linkedListNode * p)
+{
+  return p->data;
+}
+
+unsigned int getIndexOfNode(linkedListNode * p)
+{
+  return p->index;
+}
+
+linkedListNode * getFirstNode(linkedList * p)
+{
+  return p->startNode;
+}
+
+linkedListNode * getLastNode(linkedList * p)
+{
+  return p->lastNode;
+}

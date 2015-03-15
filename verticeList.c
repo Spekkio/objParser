@@ -2,10 +2,6 @@
 #include "linkedlist.h"
 #include "verticeList.h"
 
-struct vert {
-  double x,y,z;
-};
-
 void freeVertice(void * v)
 {
   free(v);
@@ -25,4 +21,13 @@ linkedList * createVerticeList()
   verticeList = newLinkedList(newVertice, freeVertice);
 
   return verticeList;
+}
+
+void storeVerticeData(linkedListNode * node, const vertice new)
+{
+  vertice * ptr;
+  ptr = getNodeDataPtr(node);
+  ptr->x = new.x;
+  ptr->y = new.y;
+  ptr->z = new.z;
 }

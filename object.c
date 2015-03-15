@@ -42,3 +42,17 @@ linkedList * createNewObjectList(void)
 
   return list;
 }
+
+linkedList * getVerticeList(linkedListNode * node)
+{
+  struct object * ptr;
+  ptr = getNodeDataPtr(node);
+  return ptr->vertices;
+}
+
+linkedList * getFacesList(linkedListNode * node)
+{
+  struct object * ptr;
+  ptr = getNodeDataPtr(node);
+  return ptr->faces;
+}
