@@ -11,10 +11,15 @@ struct object {
 void freeObject(void * ptr)
 {
   struct object * p = (struct object *)ptr;
-  free(p->name);
-  freeList(p->vertices);
-  freeList(p->faces);
-  free(p);
+  
+  if(p!=0) {
+    if(p->name!=0)
+      free(p->name);
+    
+    freeList(p->vertices);
+    freeList(p->faces);
+    free(p);
+  }
 }
 
 void * newObject(void)

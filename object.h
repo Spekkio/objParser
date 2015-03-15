@@ -1,1 +1,2 @@
 
+linkedList * createNewObjectList();

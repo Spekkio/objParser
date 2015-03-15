@@ -28,11 +28,11 @@ void * newLinkedList(void * (*createFunction) (void), void (*freeFunction) (void
   return new;
 }
 
-linkedListNode * newLinkedListNode(linkedList * list)
+linkedListNode * newLinkedListNode(const linkedList * list)
 {
   linkedListNode * node;
   node = malloc(sizeof(linkedListNode));
-  list->createFunction();
+  node->data = list->createFunction();
   node->index = -1;
   node->next = (linkedListNode *)0;
   node->prev = (linkedListNode *)0;
@@ -53,6 +53,19 @@ void addNode(linkedList * list, linkedListNode * node)
     list->startNode->index = list->lastNode->index+1;
   }
   list->numNodes++;
+}
+
+linkedListNode * addNewNode(linkedList * list)
+{
+  linkedListNode * node;
+  node = newLinkedListNode(list);
+  addNode(list,node);
+  return node;
+}
+
+unsigned int getNumNodes(const linkedList * p)
+{
+  return p->numNodes;
 }
 
 void freeList(void * list_in)
