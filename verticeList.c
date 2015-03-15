@@ -20,13 +20,13 @@ void * newVertice(void)
 
 void createVerticeList()
 {
-  linkedList * list;
-  linkedListNode * node;
+  linkedList * verticeList;
+  linkedListNode * verticeNode;
 
-  list = newLinkedList();
-  node = newLinkedListNode(newVertice, freeVertice);
+  verticeList = newLinkedList(newVertice, freeVertice);
+  verticeNode = newLinkedListNode(verticeList);
 
-  addNode(list, node);
+  addNode(verticeList, verticeNode);
 
-  freeList(list);
+  freeList(verticeList);
 }

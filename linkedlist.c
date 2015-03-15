@@ -4,7 +4,6 @@
 struct node {
   void * data;
   unsigned int index;
-  void (*freeFunction) (void * ptr);
   linkedListNode *next;
   linkedListNode *prev;
 };
@@ -12,26 +11,29 @@ struct node {
 struct list {
   linkedListNode * startNode;
   linkedListNode * lastNode;
+  void (*freeFunction) (void * ptr);
+  void * (*createFunction) (void);
   unsigned int numNodes;
 };
 
-void * newLinkedList(void)
+void * newLinkedList(void * (*createFunction) (void), void (*freeFunction) (void * ptr))
 {
   linkedList * new;
   new = malloc(sizeof(linkedList));
   new->startNode = (linkedListNode *)0;
   new->lastNode = (linkedListNode *)0;
   new->numNodes = 0;
+  new->freeFunction = freeFunction;
+  new->createFunction = createFunction;
   return new;
 }
 
-linkedListNode * newLinkedListNode(void * (*createFunction) (void), void (*freeFunction) (void * ptr))
+linkedListNode * newLinkedListNode(linkedList * list)
 {
   linkedListNode * node;
   node = malloc(sizeof(linkedListNode));
-  node->data = createFunction();
+  list->createFunction();
   node->index = -1;
-  node->freeFunction = freeFunction;
   node->next = (linkedListNode *)0;
   node->prev = (linkedListNode *)0;
 
@@ -63,11 +65,10 @@ void freeList(void * list_in)
   i=0;
   while(i<list->numNodes)
     {
-      node->freeFunction(node->data);
+      list->freeFunction(node->data);
       node = node->next;
       i++;
     }
 
   free(list);
 }
-
