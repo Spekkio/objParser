@@ -18,15 +18,11 @@ void * newVertice(void)
   return v;
 }
 
-void createVerticeList()
+linkedList * createVerticeList()
 {
   linkedList * verticeList;
-  linkedListNode * verticeNode;
 
   verticeList = newLinkedList(newVertice, freeVertice);
-  verticeNode = newLinkedListNode(verticeList);
 
-  addNode(verticeList, verticeNode);
-
-  freeList(verticeList);
+  return verticeList;
 }

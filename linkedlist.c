@@ -57,7 +57,7 @@ void addNode(linkedList * list, linkedListNode * node)
 
 void freeList(void * list_in)
 {
-  int i;
+  unsigned int i;
   linkedList * list = list_in;
   linkedListNode * node;
   node = list->startNode;
