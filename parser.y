@@ -45,8 +45,7 @@ line:
 | USEMTL STRING { /*printf("Use Material: %s\n",$2);*/ }
 | OBJECT STRING {
   printf("/* New object: %s */\n", $2);
-  objectListNode = newLinkedListNode(objectList);
-  addNode(objectList,  objectListNode);
+  objectListNode = addNewNode(objectList);
  }
 | VERT NUMBER NUMBER NUMBER { printf("#%u ",++v_num); printf("Vertex: %f %f %f\n",$2,$3,$4); }
 | FACE numberlist { printf("face\n"); /*printf("Face(4) %f %f %f\n",$2,$3,$4);*/ }
@@ -67,18 +66,14 @@ int main(int argc, char **argv)
 {  
   objectList = createNewObjectList();
 
-  objectListNode = addNewNode(objectList);
-  objectListNode = addNewNode(objectList);
-
-  printf("List: %u\n",getNumNodes(objectList));
-
-  freeList(objectList);
-
   if(parseParams(argc, argv))
     {
       return 0;
     }
   yyparse();
+
+  printf("List: %u\n",getNumNodes(objectList));
+  freeList(objectList);
 
   return 0;
 }

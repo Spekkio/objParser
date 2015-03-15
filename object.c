@@ -28,6 +28,7 @@ void * newObject(void)
   o = malloc(sizeof(struct object));
 
   o->vertices = createVerticeList();
+  o->faces = createVerticeList(); /* todo */
 
   o->name = 0;
   return o;

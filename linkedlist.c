@@ -72,16 +72,22 @@ void freeList(void * list_in)
 {
   unsigned int i;
   linkedList * list = list_in;
-  linkedListNode * node;
-  node = list->startNode;
-
-  i=0;
-  while(i<list->numNodes)
-    {
-      list->freeFunction(node->data);
-      node = node->next;
-      i++;
-    }
-
-  free(list);
+  linkedListNode * node=0, * temp=0;
+  
+  if(list!=0) {
+    node = list->startNode;
+    i=0;
+    while(i<list->numNodes)
+      {
+	if(node!=0) {
+	  list->freeFunction(node->data); /* free the space of the data */
+	  temp = node;
+	  node = node->next;
+	  free(temp); /* free the space of the node */
+	}
+	i++;
+      }
+    
+    free(list);
+  }
 }
