@@ -77,7 +77,7 @@ line:
 
 numberlist: 
 | numberlist NUMBER { printf("%u ", (unsigned int)$2); }
-| numberlist NUMBER SLASH { printf("%u ", (unsigned int)$2); }
+| numberlist NUMBER SLASH NUMBER { printf("%u(%u) ", (unsigned int)$2, (unsigned int)$4); }
 ;
 
 %%
