@@ -24,7 +24,7 @@ verticeList.o: verticeList.c verticeList.h linkedlist.h
 numList.o: numList.c numList.h linkedlist.h
 	gcc $(CFLAGS) -c numList.c
 
-faceList.o: faceList.c faceList.h linkedlist.h
+faceList.o: faceList.c faceList.h linkedlist.h numList.h
 	gcc $(CFLAGS) -c faceList.c
 
 object.o: object.c object.h linkedlist.h

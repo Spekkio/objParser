@@ -18,10 +18,18 @@ void * newFace(void)
   f = malloc(sizeof(struct face));
   f->vertices = createNumList();
   f->verticeNums = createNumList();
+  f->numVertices = 0;
   return f;
 }
 
 linkedList * createFaceList()
 {
   return newLinkedList(newFace, freeFace);
+}
+
+linkedList * getverticeNums(linkedListNode * node)
+{
+  struct face * ptr;
+  ptr = getNodeDataPtr(node);
+  return ptr->verticeNums;
 }
