@@ -1,6 +1,6 @@
 target: parser
 
-OBJS=func.o linkedlist.o verticeList.o object.o
+OBJS=func.o linkedlist.o verticeList.o faceList.o numList.o object.o
 CFLAGS=-g -pedantic -Wall -Wextra -Werror
 
 lex.yy.c: parser.l parser.tab.h
@@ -20,6 +20,12 @@ linkedlist.o: linkedlist.c linkedlist.h
 
 verticeList.o: verticeList.c verticeList.h linkedlist.h
 	gcc $(CFLAGS) -c verticeList.c
+
+numList.o: numList.c numList.h linkedlist.h
+	gcc $(CFLAGS) -c numList.c
+
+faceList.o: faceList.c faceList.h linkedlist.h
+	gcc $(CFLAGS) -c faceList.c
 
 object.o: object.c object.h linkedlist.h
 	gcc $(CFLAGS) -c object.c
