@@ -68,16 +68,16 @@ line:
   } else yyerror("Error: No object was defined\n");
 
  }
-| FACE numberlist { printf("face\n"); /*printf("Face(4) %f %f %f\n",$2,$3,$4);*/ }
+| FACE facenumberlist { printf("face\n"); /*printf("Face(4) %f %f %f\n",$2,$3,$4);*/ }
 | ELL NUMBER NUMBER { /**/ }
 | TEXTURE NUMBER NUMBER {   }
 | SETTING STRING { /*printf("Setting: %s\n",$2);*/ }
 | SETTING NUMBER { /*printf("Setting: %s\n",$2);*/ }
 ;
 
-numberlist: 
-| numberlist NUMBER { printf("%u ", (unsigned int)$2); }
-| numberlist NUMBER SLASH NUMBER { printf("%u(%u) ", (unsigned int)$2, (unsigned int)$4); }
+facenumberlist: 
+| facenumberlist NUMBER { printf("%u ", (unsigned int)$2); }
+| facenumberlist NUMBER SLASH NUMBER { printf("%u(%u) ", (unsigned int)$2, (unsigned int)$4); }
 ;
 
 %%
