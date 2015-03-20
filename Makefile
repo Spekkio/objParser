@@ -30,5 +30,6 @@ faceList.o: faceList.c faceList.h linkedlist.h
 object.o: object.c object.h linkedlist.h
 	gcc $(CFLAGS) -c object.c
 
-clear:
-	rm -rf parser lex.yy.c bparser parser.tab.c parser.tab.h *~ \#*\#
+clean:
+	rm -rf parser lex.yy.c bparser parser.tab.c parser.tab.h *~ \#*\# *.o
+
