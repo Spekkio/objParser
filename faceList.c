@@ -27,7 +27,7 @@ linkedList * createFaceList()
   return newLinkedList(newFace, freeFace);
 }
 
-linkedList * getverticeNums(linkedListNode * node)
+linkedList * getVerticeNums(linkedListNode * node)
 {
   struct face * ptr;
   ptr = getNodeDataPtr(node);

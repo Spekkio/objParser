@@ -1,6 +1,8 @@
 typedef struct node linkedListNode;
 typedef struct list linkedList;
 
+linkedListNode * getNextLinkedListNode(linkedListNode * list);
+linkedListNode * getLinkedListNodeByIndex(linkedList * list, const unsigned int index);
 void * newLinkedList(void * (*createFunction) (void), void (*freeFunction) (void * ptr));
 linkedListNode * newLinkedListNode(const linkedList * list);
 void addNode(linkedList * list, linkedListNode * node);

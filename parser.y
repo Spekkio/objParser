@@ -4,20 +4,35 @@
 #include "linkedlist.h"
 #include "object.h"
 #include "verticeList.h"
+#include "faceList.h"
+#include "numList.h"
 
-unsigned int line = 0;
-unsigned int v_num = 0;
-int yylex();
-extern char *yytext;
-void yyerror(char *s);
+  #define ERROR_STR_MAX 256
+  size_t ERROR_STR_N = ERROR_STR_MAX;
+  char error_str[ERROR_STR_MAX];
+  
+  unsigned int line = 0;
+  unsigned int v_num = 0;
+  int yylex();
+  extern char *yytext;
+  void yyerror(char *s);
+  
+  linkedList * objectList;
+  linkedList * vertices;
+  linkedList * faces;
+  linkedList * facesNumList;
+  linkedListNode * objectListNode;
+  linkedListNode * facesListNode;
+  linkedListNode * facesNumListNode;
+  linkedListNode * verticesListNode;
+  
+  vertice tempVertice;
+  
+  int firstFace;
 
-linkedList * objectList;
-linkedList * vertices;
-linkedListNode * objectListNode;
-linkedListNode * verticesListNode;
-
-vertice tempVertice;
-
+  typedef unsigned long int face_t;
+  void storeFace(face_t number);
+  
 %}
 
 %union {
@@ -46,14 +61,21 @@ list:
 ;
 
 line:
- MTLLIB STRING { printf("/* Load Material library: %s */\n", $2); }
+MTLLIB STRING { /*printf("Load Material library: %s\n", $2);*/ }
 | USEMTL STRING { /*printf("Use Material: %s\n",$2);*/ }
 | OBJECT STRING {
-  printf("/* New object: %s */\n", $2);
+  /*
+  printf("New object: %s\n", $2);
+  */
   objectListNode = addNewNode(objectList);
  }
 | VERT NUMBER NUMBER NUMBER { 
-  printf("#%u ",++v_num); printf("Vertex: %f %f %f\n",$2,$3,$4);
+
+  ++v_num;
+  /*
+  printf("#%u ",v_num);
+  printf("Vertex: %f %f %f\n",$2,$3,$4);
+  */
 
   tempVertice.x = $2;
   tempVertice.y = $3;
@@ -67,8 +89,10 @@ line:
     } else yyerror("Error: Cannot store vertice data\n");
   } else yyerror("Error: No object was defined\n");
 
+  /*List of faces comes after vertices*/
+  firstFace = 1;
  }
-| FACE facenumberlist { printf("face\n"); /*printf("Face(4) %f %f %f\n",$2,$3,$4);*/ }
+| FACE facenumberlist { firstFace = 1; /*printf("face\n");*/ /*printf("Face(4) %f %f %f\n",$2,$3,$4);*/ }
 | ELL NUMBER NUMBER { /**/ }
 | TEXTURE NUMBER NUMBER {   }
 | SETTING STRING { /*printf("Setting: %s\n",$2);*/ }
@@ -76,14 +100,48 @@ line:
 ;
 
 facenumberlist: 
-| facenumberlist NUMBER { printf("%u ", (unsigned int)$2); }
-| facenumberlist NUMBER SLASH NUMBER { printf("%u(%u) ", (unsigned int)$2, (unsigned int)$4); }
+| facenumberlist NUMBER
+{
+  storeFace((face_t)$2);
+  /*printf("%lu ", (face_t)$2);*/
+}
+| facenumberlist NUMBER SLASH NUMBER
+{ 
+  storeFace((face_t)$2);
+  /*printf("%lu(%lu) ", (face_t)$2, (face_t)$4);*/
+}
 ;
 
 %%
 
+void storeFace(face_t number)
+{
+  if(number>v_num) {
+    snprintf(error_str, ERROR_STR_N, "Error: Trying to store face number %lu, but no vertice %lu was defined\n",number,number);
+    yyerror(error_str);
+  }
+  
+  if(objectListNode != 0)
+    {
+      faces = getFacesList(objectListNode);
+      if(faces != 0)
+	{
+	  if(firstFace) {
+	    facesListNode = addNewNode(faces);
+	  }
+	  facesNumList = getVerticeNums(facesListNode);
+	  facesNumListNode = addNewNode(facesNumList);
+	  storeNumListData(facesNumListNode, number);
+	} else yyerror("Error: Cannot store face data\n");
+    } else yyerror("Error: No object was defined\n");
+  firstFace = 0;
+
+}
+
 int main(int argc, char **argv)
 {  
+  unsigned int i,n;
+
   objectList = createNewObjectList();
 
   if(parseParams(argc, argv))
@@ -92,7 +150,20 @@ int main(int argc, char **argv)
     }
   yyparse();
 
-  printf("List: %u objects\n",getNumNodes(objectList));
+  n = getNumNodes(objectList);
+  printf("List: %u objects\n",n);
+  objectListNode = getLinkedListNodeByIndex(objectList, 0);
+  i=0;
+  while(i<n) {
+    if(objectListNode != 0) {
+      vertices = getVerticeList(objectListNode);
+      faces = getFacesList(objectListNode);
+      printf("Object #%u\n -> Vertices: %u\n -> Faces: %u\n", i, getNumNodes(vertices), getNumNodes(faces));
+    }
+    objectListNode = getNextLinkedListNode(objectListNode);
+    i++;
+  }
+  
   freeList(objectList);
 
   return 0;

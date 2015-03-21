@@ -7,3 +7,6 @@ struct face {
 };
 
 
+linkedList * getVerticeNums(linkedListNode * node);
+linkedList * createFaceList();
+

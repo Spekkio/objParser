@@ -17,5 +17,12 @@ void * newNumList(void)
 
 linkedList * createNumList()
 {
-  return newLinkedList(newNumList, freeNumList);
+  return (linkedList *)newLinkedList(newNumList, freeNumList);
+}
+
+void storeNumListData(linkedListNode * ptr, const unsigned long int n)
+{
+  unsigned long int * data;
+  data = getNodeDataPtr(ptr);
+  *data = n;
 }

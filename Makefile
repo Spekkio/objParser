@@ -6,11 +6,11 @@ CFLAGS=-g -pedantic -Wall -Wextra -Werror
 lex.yy.c: parser.l parser.tab.h
 	flex parser.l
 
-parser.tab.c parser.tab.h: parser.y
+parser.tab.c parser.tab.h: parser.y func.h linkedlist.h object.h verticeList.h faceList.h numList.h
 	bison -v -d parser.y
 
-parser: lex.yy.c $(OBJS)
-	gcc $(CFLAGS) -Wno-error=unused-function -o $@ parser.tab.c lex.yy.c $(OBJS) -lfl
+parser: lex.yy.c $(OBJS) 
+	gcc $(CFLAGS) -Wno-unused-function -Wno-error=unused-function -o $@ parser.tab.c lex.yy.c $(OBJS) -lfl
 
 func.o: func.c func.h
 	gcc $(CFLAGS) -c func.c

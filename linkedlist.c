@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "linkedlist.h"
 
 struct node {
@@ -16,10 +17,39 @@ struct list {
   unsigned int numNodes;
 };
 
+linkedListNode * getNextLinkedListNode(linkedListNode * list)
+{
+  return list->next;
+}
+
+linkedListNode * getLinkedListNodeByIndex(linkedList * list, const unsigned int index)
+{
+  unsigned int i;
+  linkedListNode * tmpNode = list->startNode;
+
+  i=0;
+  while(i<list->numNodes)
+    {
+      if(tmpNode != 0) {
+	if(tmpNode->index == index) {
+	  return tmpNode;
+	}
+	tmpNode = tmpNode->next;
+	i++;
+      } else return (linkedListNode *)0;
+    }
+  return (linkedListNode *)0;
+}
+
 void * newLinkedList(void * (*createFunction) (void), void (*freeFunction) (void * ptr))
 {
   linkedList * new;
   new = malloc(sizeof(linkedList));
+  if(new == NULL)
+    {
+      fprintf(stderr, "Error: Out of memory\n");
+      return 0;
+    }
   new->startNode = (linkedListNode *)0;
   new->lastNode = (linkedListNode *)0;
   new->numNodes = 0;
@@ -32,6 +62,11 @@ linkedListNode * newLinkedListNode(const linkedList * list)
 {
   linkedListNode * node;
   node = malloc(sizeof(linkedListNode));
+  if(node == NULL)
+    {
+      fprintf(stderr, "Error: Out of memory\n");
+      return 0;
+    }
   node->data = list->createFunction();
   node->index = -1;
   node->next = (linkedListNode *)0;
@@ -43,14 +78,17 @@ linkedListNode * newLinkedListNode(const linkedList * list)
 void addNode(linkedList * list, linkedListNode * node)
 {
   if(list->startNode==0) {
+    node->prev = 0;
+    node->next = 0;
     list->startNode = node;
     list->lastNode = list->startNode;
     list->startNode->index = 0;
   }
   else {
-    list->lastNode->next = node;
-    list->lastNode = list->lastNode->next;
-    list->startNode->index = list->lastNode->index+1;
+    list->lastNode->next = node;            /*Set the Next node to the new node */
+    node->prev = list->lastNode;            /*Set the Prev node to the current last node*/
+    list->lastNode = node;                  /*Set the LastNode to the new node */
+    list->lastNode->index = list->numNodes; /*Set the Index*/
   }
   list->numNodes++;
 }
@@ -58,8 +96,10 @@ void addNode(linkedList * list, linkedListNode * node)
 linkedListNode * addNewNode(linkedList * list)
 {
   linkedListNode * node;
-  node = newLinkedListNode(list);
-  addNode(list,node);
+  if(list!=0) {
+    node = newLinkedListNode(list);
+    addNode(list,node);
+  } else return (linkedListNode *)0;
   return node;
 }
 

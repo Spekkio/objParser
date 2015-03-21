@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "linkedlist.h"
 #include "verticeList.h"
+#include "faceList.h"
 
 struct object {
   linkedList * vertices;
@@ -28,7 +29,7 @@ void * newObject(void)
   o = malloc(sizeof(struct object));
 
   o->vertices = createVerticeList();
-  o->faces = createVerticeList(); /* todo */
+  o->faces = createFaceList(); /* todo */
 
   o->name = 0;
   return o;
