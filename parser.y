@@ -150,9 +150,10 @@ int main(int argc, char **argv)
     }
   yyparse();
 
+  /*********/
   n = getNumNodes(objectList);
   printf("List: %u objects\n",n);
-  objectListNode = getLinkedListNodeByIndex(objectList, 0);
+  objectListNode = getFirstNode(objectList);
   i=0;
   while(i<n) {
     if(objectListNode != 0) {
@@ -163,6 +164,7 @@ int main(int argc, char **argv)
     objectListNode = getNextLinkedListNode(objectListNode);
     i++;
   }
+  /*********/
   
   freeList(objectList);
 
