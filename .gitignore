@@ -4,6 +4,7 @@
 parser.output
 *.mtl
 *.obj
+*.code
 lex.yy.c
 parser.tab.c
 parser.tab.h
