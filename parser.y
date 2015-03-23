@@ -83,6 +83,7 @@ MTLLIB STRING { /*printf("Load Material library: %s\n", $2);*/ }
   tempVertice.x = $2;
   tempVertice.y = $3;
   tempVertice.z = $4;
+  tempVertice.verticeNumber = v_num;
 
   if(objectListNode!=0) {
     vertices = getVerticeList(objectListNode);
@@ -141,23 +142,16 @@ void storeFace(face_t number)
 
 }
 
-int main(int argc, char **argv)
-{  
+void printGlVertex3fList(linkedList * objList)
+{
   unsigned int i,n,nums,a,nfaces,b;
+  /*unsigned int prev_nfaces=0;*/
   unsigned long int * fdata;
 
-  objectList = createNewObjectList();
-
-  if(parseParams(argc, argv))
-    {
-      return 0;
-    }
-  yyparse();
-
   /*********/
-  n = getNumNodes(objectList);
+  n = getNumNodes(objList);
   printf("/*List: %u objects*/\n",n);
-  objectListNode = getFirstNode(objectList);
+  objectListNode = getFirstNode(objList);
   i=0;
   while(i<n) {
     if(objectListNode != 0) {
@@ -169,18 +163,21 @@ int main(int argc, char **argv)
       a=0;
       while(a<nums) {
 	facesNumList = getVerticeNums(facesListNode);
+	
 	nfaces = getNumNodes(facesNumList);
 	printf("/*Node #%u of %u = %u*/\n",getIndexOfNode(facesListNode), nums, nfaces);
 	verticeNumListNode = getFirstNode(facesNumList);
 	b=0;
 	while(b<nfaces) {
 	  fdata = getVerticeNumListData(verticeNumListNode);
-	  verticesListNode = getLinkedListNodeByIndex(vertices, *fdata-1);
+	  /*verticesListNode = getLinkedListNodeByIndex(vertices, *fdata-1);*/
+	  verticesListNode = getLinkedListNodeByVerticeNumber(vertices, *fdata);
 	  tempVerticePtr = getVerticeData(verticesListNode);
 	  printf("/*#%lu*/ glVertex3f(%f,%f,%f);\n",*fdata,tempVerticePtr->x,tempVerticePtr->y,tempVerticePtr->z);
 	  verticeNumListNode = getNextLinkedListNode(verticeNumListNode);
 	  b++;
 	}
+	/*prev_nfaces = getNumNodes(vertices);*/
 	printf("\n");
 	facesListNode = getNextLinkedListNode(facesListNode);
 	a++;
@@ -191,6 +188,19 @@ int main(int argc, char **argv)
     i++;
   }
   /*********/
+}
+
+int main(int argc, char **argv)
+{
+  objectList = createNewObjectList();
+
+  if(parseParams(argc, argv))
+    {
+      return 0;
+    }
+  yyparse();
+
+  printGlVertex3fList(objectList);
   
   freeList(objectList);
 

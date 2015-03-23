@@ -2,16 +2,11 @@
 #include "linkedlist.h"
 #include "verticeList.h"
 #include "faceList.h"
-
-struct object {
-  linkedList * vertices;
-  linkedList * faces;
-  char * name;
-};
+#include "object.h"
 
 void freeObject(void * ptr)
 {
-  struct object * p = (struct object *)ptr;
+  object_t * p = (object_t *)ptr;
   
   if(p!=0) {
     if(p->name!=0)
@@ -25,8 +20,8 @@ void freeObject(void * ptr)
 
 void * newObject(void)
 {
-  struct object * o;
-  o = malloc(sizeof(struct object));
+  object_t * o;
+  o = malloc(sizeof(object_t));
 
   o->vertices = createVerticeList();
   o->faces = createFaceList(); /* todo */
@@ -46,14 +41,36 @@ linkedList * createNewObjectList(void)
 
 linkedList * getVerticeList(linkedListNode * node)
 {
-  struct object * ptr;
+  object_t * ptr;
   ptr = getNodeDataPtr(node);
   return ptr->vertices;
 }
 
 linkedList * getFacesList(linkedListNode * node)
 {
-  struct object * ptr;
+  object_t * ptr;
   ptr = getNodeDataPtr(node);
   return ptr->faces;
+}
+
+linkedListNode * getLinkedListNodeByVerticeNumber(linkedList * ptr, const unsigned int n)
+{
+  unsigned int i;
+  linkedListNode * tmpNode = ptr->startNode;
+  vertice * tmpVertice;
+
+  i=0;
+  while(i<ptr->numNodes)
+    {
+      if(tmpNode != 0) {
+	tmpVertice = getVerticeData(tmpNode);
+	if(n == tmpVertice->verticeNumber)
+	  {
+	    return tmpNode;
+	  }
+	tmpNode = tmpNode->next;
+	i++;
+      }
+    }
+  return (linkedListNode *)0;
 }

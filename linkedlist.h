@@ -1,6 +1,21 @@
 typedef struct node linkedListNode;
 typedef struct list linkedList;
 
+struct node {
+  void * data;
+  unsigned int index;
+  linkedListNode *next;
+  linkedListNode *prev;
+};
+
+struct list {
+  linkedListNode * startNode;
+  linkedListNode * lastNode;
+  void (*freeFunction) (void * ptr);
+  void * (*createFunction) (void);
+  unsigned int numNodes;
+};
+
 linkedListNode * getNextLinkedListNode(linkedListNode * list);
 linkedListNode * getLinkedListNodeByIndex(linkedList * list, const unsigned int index);
 void * newLinkedList(void * (*createFunction) (void), void (*freeFunction) (void * ptr));

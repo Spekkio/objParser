@@ -30,6 +30,7 @@ void storeVerticeData(linkedListNode * node, const vertice new)
   ptr->x = new.x;
   ptr->y = new.y;
   ptr->z = new.z;
+  ptr->verticeNumber = new.verticeNumber;
 }
 
 vertice * getVerticeData(linkedListNode * ptr)
@@ -38,3 +39,5 @@ vertice * getVerticeData(linkedListNode * ptr)
   p = getNodeDataPtr(ptr);
   return p;
 }
+
+

@@ -2,21 +2,6 @@
 #include <stdio.h>
 #include "linkedlist.h"
 
-struct node {
-  void * data;
-  unsigned int index;
-  linkedListNode *next;
-  linkedListNode *prev;
-};
-
-struct list {
-  linkedListNode * startNode;
-  linkedListNode * lastNode;
-  void (*freeFunction) (void * ptr);
-  void * (*createFunction) (void);
-  unsigned int numNodes;
-};
-
 linkedListNode * getNextLinkedListNode(linkedListNode * list)
 {
   return list->next;
@@ -141,6 +126,13 @@ unsigned int getIndexOfNode(linkedListNode * p)
 {
   return p->index;
 }
+
+/*
+void setIndexOfNode(linkedListNode * p, unsigned int new_index)
+{
+  p->index = new_index;
+}
+*/
 
 linkedListNode * getFirstNode(linkedList * p)
 {
