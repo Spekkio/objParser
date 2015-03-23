@@ -63,6 +63,7 @@ list:
 line:
 MTLLIB STRING { /*printf("Load Material library: %s\n", $2);*/ }
 | USEMTL STRING { /*printf("Use Material: %s\n",$2);*/ }
+| USEMTL { /*printf("Use Material: %s\n",$2);*/ }
 | OBJECT STRING {
   /*
   printf("New object: %s\n", $2);
