@@ -25,8 +25,10 @@
   linkedListNode * facesListNode;
   linkedListNode * facesNumListNode;
   linkedListNode * verticesListNode;
+  linkedListNode * verticeNumListNode;
   
   vertice tempVertice;
+  vertice * tempVerticePtr;
   
   int firstFace;
 
@@ -141,7 +143,8 @@ void storeFace(face_t number)
 
 int main(int argc, char **argv)
 {  
-  unsigned int i,n;
+  unsigned int i,n,nums,a,nfaces,b;
+  unsigned long int * fdata;
 
   objectList = createNewObjectList();
 
@@ -153,14 +156,36 @@ int main(int argc, char **argv)
 
   /*********/
   n = getNumNodes(objectList);
-  printf("List: %u objects\n",n);
+  printf("/*List: %u objects*/\n",n);
   objectListNode = getFirstNode(objectList);
   i=0;
   while(i<n) {
     if(objectListNode != 0) {
       vertices = getVerticeList(objectListNode);
       faces = getFacesList(objectListNode);
-      printf("Object #%u\n -> Vertices: %u\n -> Faces: %u\n", i, getNumNodes(vertices), getNumNodes(faces));
+      nums = getNumNodes(faces);
+      facesListNode = getFirstNode(faces);
+      printf("/*\n Object #%u\n -> Vertices: %u\n -> Faces: %u\n*/\n", i, getNumNodes(vertices), getNumNodes(faces));
+      a=0;
+      while(a<nums) {
+	facesNumList = getVerticeNums(facesListNode);
+	nfaces = getNumNodes(facesNumList);
+	printf("/*Node #%u of %u = %u*/\n",getIndexOfNode(facesListNode), nums, nfaces);
+	verticeNumListNode = getFirstNode(facesNumList);
+	b=0;
+	while(b<nfaces) {
+	  fdata = getVerticeNumListData(verticeNumListNode);
+	  verticesListNode = getLinkedListNodeByIndex(vertices, *fdata-1);
+	  tempVerticePtr = getVerticeData(verticesListNode);
+	  printf("/*#%lu*/ glVertex3f(%f,%f,%f);\n",*fdata,tempVerticePtr->x,tempVerticePtr->y,tempVerticePtr->z);
+	  verticeNumListNode = getNextLinkedListNode(verticeNumListNode);
+	  b++;
+	}
+	printf("\n");
+	facesListNode = getNextLinkedListNode(facesListNode);
+	a++;
+      }
+
     }
     objectListNode = getNextLinkedListNode(objectListNode);
     i++;

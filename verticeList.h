@@ -6,3 +6,4 @@ struct vert {
 
 linkedList * createVerticeList();
 void storeVerticeData(linkedListNode * node, const vertice new);
+vertice * getVerticeData(linkedListNode * ptr);

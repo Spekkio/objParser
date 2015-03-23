@@ -26,3 +26,10 @@ void storeNumListData(linkedListNode * ptr, const unsigned long int n)
   data = getNodeDataPtr(ptr);
   *data = n;
 }
+
+unsigned long int * getVerticeNumListData(linkedListNode * ptr)
+{
+  unsigned long int * p;
+  p = getNodeDataPtr(ptr);
+  return p;
+}
