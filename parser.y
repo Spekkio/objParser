@@ -145,10 +145,8 @@ void storeFace(face_t number)
 void printGlVertex3fList(linkedList * objList)
 {
   unsigned int i,n,nums,a,nfaces,b;
-  /*unsigned int prev_nfaces=0;*/
   unsigned long int * fdata;
 
-  /*********/
   n = getNumNodes(objList);
   printf("/*List: %u objects*/\n",n);
   objectListNode = getFirstNode(objList);
@@ -170,14 +168,12 @@ void printGlVertex3fList(linkedList * objList)
 	b=0;
 	while(b<nfaces) {
 	  fdata = getVerticeNumListData(verticeNumListNode);
-	  /*verticesListNode = getLinkedListNodeByIndex(vertices, *fdata-1);*/
 	  verticesListNode = getLinkedListNodeByVerticeNumber(vertices, *fdata);
 	  tempVerticePtr = getVerticeData(verticesListNode);
 	  printf("/*#%lu*/ glVertex3f(%f,%f,%f);\n",*fdata,tempVerticePtr->x,tempVerticePtr->y,tempVerticePtr->z);
 	  verticeNumListNode = getNextLinkedListNode(verticeNumListNode);
 	  b++;
 	}
-	/*prev_nfaces = getNumNodes(vertices);*/
 	printf("\n");
 	facesListNode = getNextLinkedListNode(facesListNode);
 	a++;
@@ -187,7 +183,6 @@ void printGlVertex3fList(linkedList * objList)
     objectListNode = getNextLinkedListNode(objectListNode);
     i++;
   }
-  /*********/
 }
 
 int main(int argc, char **argv)

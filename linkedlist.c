@@ -127,13 +127,6 @@ unsigned int getIndexOfNode(linkedListNode * p)
   return p->index;
 }
 
-/*
-void setIndexOfNode(linkedListNode * p, unsigned int new_index)
-{
-  p->index = new_index;
-}
-*/
-
 linkedListNode * getFirstNode(linkedList * p)
 {
   return p->startNode;
