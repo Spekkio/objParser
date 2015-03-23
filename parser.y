@@ -74,7 +74,7 @@ MTLLIB STRING { /*printf("Load Material library: %s\n", $2);*/ }
  }
 | VERT NUMBER NUMBER NUMBER { 
 
-  ++v_num;
+  v_num++;
   /*
   printf("#%u ",v_num);
   printf("Vertex: %f %f %f\n",$2,$3,$4);
