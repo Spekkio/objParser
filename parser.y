@@ -142,14 +142,14 @@ void storeFace(face_t number)
 
 }
 
-void printGlVertex3fList(linkedList * objList)
+void printGlVertex3fList(linkedList * objList, double scale)
 {
   unsigned long int * fdata;
   unsigned int i,n,nums,a,nfaces,b;
   unsigned int vNumChange = 0, newObject = 0;
 
   n = getNumNodes(objList);
-  printf("/*List: %u objects*/\n",n);
+  /*printf("List: %u objects\n",n);*/
   objectListNode = getFirstNode(objList);
   i=0;
   while(i<n) {
@@ -188,14 +188,14 @@ void printGlVertex3fList(linkedList * objList)
 	    break;
 	  }
 	}
-	printf("/*Node #%u of %u = %u*/\n",getIndexOfNode(facesListNode), nums, nfaces);
+	/*printf("Node #%u of %u = %u\n",getIndexOfNode(facesListNode), nums, nfaces);*/
 	verticeNumListNode = getFirstNode(facesNumList);
 	b=0;
 	while(b<nfaces) {
 	  fdata = getVerticeNumListData(verticeNumListNode);
 	  verticesListNode = getLinkedListNodeByVerticeNumber(vertices, *fdata);
 	  tempVerticePtr = getVerticeData(verticesListNode);
-	  printf("/*#%lu*/ glVertex3f(%f,%f,%f);\n",*fdata,tempVerticePtr->x,tempVerticePtr->y,tempVerticePtr->z);
+	  printf("glVertex3f(%f,%f,%f);\n",tempVerticePtr->x*scale,tempVerticePtr->y*scale,tempVerticePtr->z*scale);
 	  verticeNumListNode = getNextLinkedListNode(verticeNumListNode);
 	  b++;
 	}
@@ -222,7 +222,7 @@ int main(int argc, char **argv)
     }
   yyparse();
 
-  printGlVertex3fList(objectList);
+  printGlVertex3fList(objectList,10.0f);
   
   freeList(objectList);
 
