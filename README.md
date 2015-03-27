@@ -59,3 +59,9 @@ glVertex3f(-1.000000,-1.000000,-1.000000);
 glVertex3f(-1.000000,1.000000,-1.000000);
 glEnd();
 ```
+
+## TODO
+
+Handle Textures, Colors, etc.
+
+Scriptable outputs using LUA, to support VBO output and whatever you want.
