@@ -11,8 +11,7 @@ Convert a Blender object (Wavefront .obj file) into c code. Currently the progra
 This was exported to c code and implemented into a program (I used [sdltest](https://github.com/Spekkio/sdltest)), currently no textures or colors.
 
 ![Spaceship OpenGL](http://vps.spekkio.se/bilder/spaceship.gif "Spaceship implemented in OpenGL c code")
-
-<a href="//www.youtube.com/embed/GpCKgM7oZ1s"><img src="http://img.youtube.com/vi/GpCKgM7oZ1s/0.jpg" alt="Spaceship video" width="240" height="180" /></a>
+<a href="https://www.youtube.com/watch?v=GpCKgM7oZ1s">Youtube Video</a>
 
 ## Simple cube example
 
