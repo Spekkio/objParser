@@ -240,7 +240,7 @@ int main(int argc, char **argv)
     }
   yyparse();
 
-  printGlVertex3fList(objectList,10.0f);
+  printGlVertex3fList(objectList,1.0f);
   
   freeList(objectList);
 
