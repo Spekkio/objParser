@@ -144,8 +144,9 @@ void storeFace(face_t number)
 
 void printGlVertex3fList(linkedList * objList)
 {
-  unsigned int i,n,nums,a,nfaces,b;
   unsigned long int * fdata;
+  unsigned int i,n,nums,a,nfaces,b;
+  unsigned int vNumChange = 0, newObject = 0;
 
   n = getNumNodes(objList);
   printf("/*List: %u objects*/\n",n);
@@ -157,12 +158,36 @@ void printGlVertex3fList(linkedList * objList)
       faces = getFacesList(objectListNode);
       nums = getNumNodes(faces);
       facesListNode = getFirstNode(faces);
-      printf("/*\n Object #%u\n -> Vertices: %u\n -> Faces: %u\n*/\n", i, getNumNodes(vertices), getNumNodes(faces));
+      /*printf("\n Object #%u\n -> Vertices: %u\n -> Faces: %u\n\n", i, getNumNodes(vertices), getNumNodes(faces));*/
       a=0;
       while(a<nums) {
 	facesNumList = getVerticeNums(facesListNode);
-	
 	nfaces = getNumNodes(facesNumList);
+
+	if((vNumChange != nfaces) || (newObject == 1) ) {
+	  newObject = 0; /* reset flag variable */
+	  if(vNumChange != 0)
+	    {
+	      printf("glEnd();\n\n");
+	    }
+	  switch(nfaces) {
+	  case 1:
+	    printf("glBegin(GL_POINTS);\n");
+	    break;
+	  case 2:
+	    printf("glBegin(GL_LINES);\n");
+	    break;
+	  case 3:
+	    printf("glBegin(GL_TRIANGLES);\n");
+	    break;
+	  case 4:
+	    printf("glBegin(GL_QUADS);\n");
+	    break;
+	  default:
+	    printf("glBegin(GL_POLYGON);\n");
+	    break;
+	  }
+	}
 	printf("/*Node #%u of %u = %u*/\n",getIndexOfNode(facesListNode), nums, nfaces);
 	verticeNumListNode = getFirstNode(facesNumList);
 	b=0;
@@ -174,15 +199,17 @@ void printGlVertex3fList(linkedList * objList)
 	  verticeNumListNode = getNextLinkedListNode(verticeNumListNode);
 	  b++;
 	}
-	printf("\n");
+	/*printf("\n");*/
 	facesListNode = getNextLinkedListNode(facesListNode);
+	vNumChange = nfaces; /*store value of previous nfaces*/
 	a++;
       }
-
     }
     objectListNode = getNextLinkedListNode(objectListNode);
+    newObject = 1; /*mark flag variable that we are working on a new object*/
     i++;
   }
+  printf("glEnd();\n\n");
 }
 
 int main(int argc, char **argv)
