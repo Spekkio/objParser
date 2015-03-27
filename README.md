@@ -1,6 +1,18 @@
 # objParser
 
-Export a Blender scene into a Wavefront .obj file
+Convert a Blender object (Wavefront .obj file) into c code. Currently the program reads from stdin and prints to stdout like this
+
+    ./parser < cube.obj > cube.code
+
+## Spaceship example
+
+![Spaceship](http://spekkio.se/bilder/ship.png "Spaceship Rendered in Blender")
+
+This was exported to c code and implemented into a program ([sdltest](https://github.com/Spekkio/sdltest)), currently no textures or colors.
+
+<a href="//www.youtube.com/embed/GpCKgM7oZ1s"><img src="http://img.youtube.com/vi/GpCKgM7oZ1s/0.jpg" alt="Spaceship video" width="240" height="180" /></a>
+
+## Simple cube example
 
 For example, make a simple cube in Blender and export it to cube.obj
 
@@ -27,7 +39,7 @@ For example, make a simple cube in Blender and export it to cube.obj
 
 Convert it into c-code
 
-	./parser < cube.obj
+    ./parser < cube.obj
 
 The output will look like this
 
@@ -64,4 +76,4 @@ glEnd();
 
 Handle Textures, Colors, etc.
 
-Scriptable outputs using LUA, to support VBO output and whatever you want.
+Scriptable outputs using LUA, to support VBO output and whatever.
