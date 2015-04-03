@@ -1,16 +1,16 @@
 target: parser
 
-OBJS=func.o linkedlist.o verticeList.o faceList.o numList.o object.o
+OBJS=func.o linkedlist.o verticeList.o faceList.o numList.o object.o window.o
 CFLAGS=-g -pedantic -Wall -Wextra -Werror
 
 lex.yy.c: parser.l parser.tab.h
 	flex parser.l
 
-parser.tab.c parser.tab.h: parser.y func.h linkedlist.h object.h verticeList.h faceList.h numList.h
+parser.tab.c parser.tab.h: parser.y func.h linkedlist.h object.h verticeList.h faceList.h numList.h window.h
 	bison -v -d parser.y
 
-parser: lex.yy.c $(OBJS) 
-	gcc $(CFLAGS) -Wno-unused-function -Wno-error=unused-function -o $@ parser.tab.c lex.yy.c $(OBJS) -lfl
+parser: lex.yy.c $(OBJS)
+	gcc $(CFLAGS) -Wno-unused-function -Wno-error=unused-function `pkg-config --cflags gtk+-2.0` -o $@ parser.tab.c lex.yy.c $(OBJS) -lfl `pkg-config --libs gtk+-2.0` -lGL -lGLU -lX11 -lpng
 
 func.o: func.c func.h
 	gcc $(CFLAGS) -c func.c
@@ -29,6 +29,9 @@ faceList.o: faceList.c faceList.h linkedlist.h numList.h
 
 object.o: object.c object.h linkedlist.h
 	gcc $(CFLAGS) -c object.c
+
+window.o: window.c window.h
+	gcc $(CFLAGS) `pkg-config --cflags gtk+-2.0` -c window.c
 
 clean:
 	rm -rf parser lex.yy.c bparser parser.tab.c parser.tab.h *~ \#*\# *.o

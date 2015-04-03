@@ -24,6 +24,7 @@
 #include "verticeList.h"
 #include "faceList.h"
 #include "numList.h"
+#include "window.h"
 
   #define ERROR_STR_MAX 256
   size_t ERROR_STR_N = ERROR_STR_MAX;
@@ -240,7 +241,9 @@ int main(int argc, char **argv)
     }
   yyparse();
 
-  printGlVertex3fList(objectList,1.0f);
+  /*printGlVertex3fList(objectList,1.0f);*/
+
+  init_window(argc, argv);
   
   freeList(objectList);
 
