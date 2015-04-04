@@ -38,7 +38,7 @@ extern unsigned int line;
 "/"       { return SLASH; }
 
 [-]{0,1}[0-9.]+     { yylval.number = atof(yytext); return NUMBER; }
-[A-Za-z0-9._]+      { yylval.string = yytext; return STRING; }
+[A-Za-z0-9._-]+     { yylval.string = yytext; return STRING; }
 #+.*\n              { line++; /*Comment*/ }
 \n                  { line++; return EOL; }
 [ \t\r\f\v]         { }
