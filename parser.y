@@ -249,5 +249,5 @@ int main(int argc, char **argv)
 
 void yyerror(char *s)
 {
-  printf("error: %s at line %u\n", s, line);
+  fprintf(stderr, "error: %s at line %u\n", s, line);
 }
