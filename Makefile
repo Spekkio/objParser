@@ -1,7 +1,7 @@
 target: parser
 
 OBJS=func.o linkedlist.o verticeList.o faceList.o numList.o object.o window.o
-CFLAGS=-g -pedantic -Wall -Wextra -Werror -std=gnu99
+CFLAGS=-g -O3 -pedantic -Wall -Wextra -Werror -std=gnu99
 
 lex.yy.c: parser.l parser.tab.h
 	flex parser.l

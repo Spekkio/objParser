@@ -34,6 +34,7 @@
 #define WINDOW_BPP 24
 
 unsigned int quitting = 0;
+unsigned int loadingObj = 1;
 
 /* GTK */
 GtkWidget * window;
@@ -96,7 +97,10 @@ void expose()
   glTranslatef(0.0, 0.0,-10.0);
   
   glColor4f(1.0, 1.0, 1.0, 0.5);
-  glCallList(glObject);
+  
+  if(loadingObj==0) {
+    glCallList(glObject);
+  }
 
   glXSwapBuffers(disp, GDK_WINDOW_XID(window->window));
 }
@@ -199,10 +203,12 @@ void glxSetup()
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
+  loadingObj = 1;
   glObject = glGenLists(1);
   glNewList(glObject, GL_COMPILE);
   doGlVertexList(objectList,1.0f,doGlVertex,doGlFaceSize, doGlEndList);
   glEndList();
+  loadingObj = 0;
 
   glGetFloatv(GL_MODELVIEW_MATRIX, rotation_matrix);
 }

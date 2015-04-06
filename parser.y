@@ -204,6 +204,7 @@ void doGlVertexList(linkedList * objList, double scale, void (*doVertex) (const 
   objectListNode = getFirstNode(objList);
   i=0;
   while(i<n) {
+
     if(objectListNode != 0) {
       vertices = getVerticeList(objectListNode);
       faces = getFacesList(objectListNode);
@@ -248,6 +249,9 @@ void doGlVertexList(linkedList * objList, double scale, void (*doVertex) (const 
     objectListNode = getNextLinkedListNode(objectListNode);
     newObject = 1; /*mark flag variable that we are working on a new object*/
     i++;
+
+    if((pFlags & PFLAG_GUI) && !(pFlags & PFLAG_STDOUT))
+      printf("Loading: %.1f%%\n",((double)i/(double)n)*100.0f);
   }
   doEndList();
   /*printf("glEnd();\n\n");*/
