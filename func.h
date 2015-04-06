@@ -17,5 +17,10 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-void printglVertex3f(const float a, const float b, const float c);
+#define PFLAG_STDIN  1
+#define PFLAG_GUI    2
+#define PFLAG_STDOUT 4
+
+extern unsigned int pFlags;
+
 int parseParams(const int argc, char **argv);

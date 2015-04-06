@@ -20,14 +20,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#define PFLAG_STDIN 1
+#include "func.h"
 
 unsigned int pFlags;
-
-void printglVertex3f(const float a, const float b, const float c)
-{
-  printf("glVertex3f(%f, %f, %f);\n",a,b,c);
-}
 
 int parseParams(const int argc, char **argv)
 {
@@ -37,8 +32,17 @@ int parseParams(const int argc, char **argv)
 
     if(strncmp("--stdin",argv[i], 7)==0)
       {
-	printf("Read from stdin\n");
 	pFlags = pFlags | PFLAG_STDIN;
+      }
+
+    if(strncmp("--stdout",argv[i], 8)==0)
+      {
+	pFlags = pFlags | PFLAG_STDOUT;
+      }
+
+    if(strncmp("--gui",argv[i], 5)==0)
+      {
+	pFlags = pFlags | PFLAG_GUI;
       }
 
     if(strncmp("--version",argv[i], 9)==0)

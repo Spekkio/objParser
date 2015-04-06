@@ -25,6 +25,7 @@
 #include "faceList.h"
 #include "numList.h"
 #include "window.h"
+#include "func.h"
 
   #define ERROR_STR_MAX 256
   size_t ERROR_STR_N = ERROR_STR_MAX;
@@ -260,11 +261,16 @@ int main(int argc, char **argv)
     {
       return 0;
     }
+
   yyparse();
 
-  /*doGlVertexList(objectList,1.0f,doVertex,doFaceSize, doEndList);*/
+  if(pFlags & PFLAG_STDOUT) {
+    doGlVertexList(objectList,1.0f,doVertex,doFaceSize, doEndList);
+  }
 
-  init_window(argc, argv);
+  if(pFlags & PFLAG_GUI) {
+    init_window(argc, argv);
+  }
   
   freeList(objectList);
 
