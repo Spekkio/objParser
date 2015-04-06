@@ -75,6 +75,6 @@ glEnd();
 
 ## TODO
 
-Handle Textures, Colors, etc.
-
-Scriptable outputs using LUA, to support VBO output and whatever.
+* Faster loading.
+* Handle Textures, Colors, etc.
+* Scriptable outputs using LUA, to support VBO output and whatever.
