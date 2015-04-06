@@ -20,6 +20,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#define PFLAG_STDIN 1
+
+unsigned int pFlags;
+
 void printglVertex3f(const float a, const float b, const float c)
 {
   printf("glVertex3f(%f, %f, %f);\n",a,b,c);
@@ -28,11 +32,13 @@ void printglVertex3f(const float a, const float b, const float c)
 int parseParams(const int argc, char **argv)
 {
   int i=0;
+  pFlags = 0;
   while(i<argc) {
 
-    if(strncmp("--glvertex",argv[i], 10)==0)
+    if(strncmp("--stdin",argv[i], 7)==0)
       {
-	printf("use glvert\n");
+	printf("Read from stdin\n");
+	pFlags = pFlags | PFLAG_STDIN;
       }
 
     if(strncmp("--version",argv[i], 9)==0)

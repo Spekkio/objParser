@@ -161,7 +161,38 @@ void storeFace(face_t number)
 
 }
 
-void printGlVertex3fList(linkedList * objList, double scale)
+void doVertex(const double x, const double y, const double z)
+{
+  printf("glVertex3f(%f,%f,%f);\n",x,y,z);
+}
+
+void doFaceSize(const unsigned int nfaces)
+{
+  switch(nfaces) {
+  case 1:
+    printf("glBegin(GL_POINTS);\n");
+    break;
+  case 2:
+    printf("glBegin(GL_LINES);\n");
+    break;
+  case 3:
+    printf("glBegin(GL_TRIANGLES);\n");
+    break;
+  case 4:
+    printf("glBegin(GL_QUADS);\n");
+    break;
+  default:
+    printf("glBegin(GL_POLYGON);\n");
+    break;
+  }
+}
+
+void doEndList(void)
+{ 
+  printf("glEnd();\n\n");
+}
+
+void doGlVertexList(linkedList * objList, double scale, void (*doVertex) (const double x, const double y, const double z), void (doFaceSize) (const unsigned int n), void (*doEndList) (void))
 {
   unsigned long int * fdata;
   unsigned int i,n,nums,a,nfaces,b;
@@ -187,25 +218,12 @@ void printGlVertex3fList(linkedList * objList, double scale)
 	  newObject = 0; /* reset flag variable */
 	  if(vNumChange != 0)
 	    {
-	      printf("glEnd();\n\n");
+	      doEndList();
 	    }
-	  switch(nfaces) {
-	  case 1:
-	    printf("glBegin(GL_POINTS);\n");
-	    break;
-	  case 2:
-	    printf("glBegin(GL_LINES);\n");
-	    break;
-	  case 3:
-	    printf("glBegin(GL_TRIANGLES);\n");
-	    break;
-	  case 4:
-	    printf("glBegin(GL_QUADS);\n");
-	    break;
-	  default:
-	    printf("glBegin(GL_POLYGON);\n");
-	    break;
-	  }
+	  
+	  doFaceSize(nfaces);
+	  /*
+	  */
 	}
 	/*printf("Node #%u of %u = %u\n",getIndexOfNode(facesListNode), nums, nfaces);*/
 	verticeNumListNode = getFirstNode(facesNumList);
@@ -214,7 +232,9 @@ void printGlVertex3fList(linkedList * objList, double scale)
 	  fdata = getVerticeNumListData(verticeNumListNode);
 	  verticesListNode = getLinkedListNodeByVerticeNumber(vertices, *fdata);
 	  tempVerticePtr = getVerticeData(verticesListNode);
-	  printf("glVertex3f(%f,%f,%f);\n",tempVerticePtr->x*scale,tempVerticePtr->y*scale,tempVerticePtr->z*scale);
+
+	  doVertex(tempVerticePtr->x*scale, tempVerticePtr->y*scale, tempVerticePtr->z*scale);
+
 	  verticeNumListNode = getNextLinkedListNode(verticeNumListNode);
 	  b++;
 	}
@@ -228,7 +248,8 @@ void printGlVertex3fList(linkedList * objList, double scale)
     newObject = 1; /*mark flag variable that we are working on a new object*/
     i++;
   }
-  printf("glEnd();\n\n");
+  doEndList();
+  /*printf("glEnd();\n\n");*/
 }
 
 int main(int argc, char **argv)
@@ -241,7 +262,7 @@ int main(int argc, char **argv)
     }
   yyparse();
 
-  /*printGlVertex3fList(objectList,1.0f);*/
+  /*doGlVertexList(objectList,1.0f,doVertex,doFaceSize, doEndList);*/
 
   init_window(argc, argv);
   

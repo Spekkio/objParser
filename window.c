@@ -1,3 +1,22 @@
+/*
+    objParser: converting Wavefront .obj format into OpenGL c-code
+    Copyright (C) 2015  Daniel Hedeblom
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <GL/glx.h>
@@ -6,6 +25,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "linkedlist.h"
+#include "main.h"
 
 #define X_WIDTH 800
 #define Y_HEIGHT 600
@@ -29,10 +51,53 @@ XWindowAttributes wa;
 GLXContext glc;
 GLfloat rotation_matrix[16];
 GLint att[]   = { GLX_RGBA, GLX_DEPTH_SIZE, WINDOW_BPP, GLX_DOUBLEBUFFER, None };
+GLuint glObject;
+
+void doGlVertex(const double x, const double y, const double z)
+{
+  glVertex3f(x,y,z);
+}
+
+void doGlFaceSize(const unsigned int nfaces)
+{
+  switch(nfaces) {
+  case 1:
+    glBegin(GL_POINTS);
+    break;
+  case 2:
+    glBegin(GL_LINES);
+    break;
+  case 3:
+    glBegin(GL_TRIANGLES);
+    break;
+  case 4:
+    glBegin(GL_QUADS);
+    break;
+  default:
+    glBegin(GL_POLYGON);
+    break;
+  }
+}
+
+void doGlEndList(void)
+{ 
+  glEnd();
+}
 
 void expose()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  glLoadIdentity();
+  /*
+  glRotatef(yd, 1.0, 0.0, 0.0);
+  glRotatef(xd, 0.0, 1.0, 0.0);
+  */
+  glTranslatef(0.0, 0.0,-10.0);
+  
+  glColor4f(1.0, 1.0, 1.0, 0.5);
+  glCallList(glObject);
+
   glXSwapBuffers(disp, GDK_WINDOW_XID(window->window));
 }
 
@@ -79,7 +144,7 @@ void initRoutine()
   gtk_window_set_title(GTK_WINDOW(window), "objParser Viewer");
   gtk_window_set_default_size(GTK_WINDOW(window), X_WIDTH, Y_HEIGHT);
 
-  g_timeout_add(0,(GSourceFunc)time_handler, GTK_WINDOW(window));
+  g_timeout_add(1.0,(GSourceFunc)time_handler, GTK_WINDOW(window));
 
   g_signal_connect(window, "delete-event", G_CALLBACK(delete_event), NULL);
   g_signal_connect(window, "expose-event", G_CALLBACK(expose_event), NULL);
@@ -115,14 +180,30 @@ void glxSetup()
   /*attach a GLX context to a window or a GLX pixmap*/
   glXMakeCurrent(disp, GDK_WINDOW_XID(window->window), glc);
 
+  glShadeModel(GL_SMOOTH);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glEnable( GL_BLEND );
+  glClearDepth(1.0);
+
+
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LEQUAL);
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
   glClearColor(0.0, 0.0, 0.0, 1.00);
 
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  
+  gluPerspective(70.0, 800.0f/600.0f, 1.0, 500.0);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
+
+  glObject = glGenLists(1);
+  glNewList(glObject, GL_COMPILE);
+  doGlVertexList(objectList,1.0f,doGlVertex,doGlFaceSize, doGlEndList);
+  glEndList();
+
   glGetFloatv(GL_MODELVIEW_MATRIX, rotation_matrix);
 }
 

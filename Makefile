@@ -1,12 +1,12 @@
 target: parser
 
 OBJS=func.o linkedlist.o verticeList.o faceList.o numList.o object.o window.o
-CFLAGS=-g -pedantic -Wall -Wextra -Werror
+CFLAGS=-g -pedantic -Wall -Wextra -Werror -std=gnu99
 
 lex.yy.c: parser.l parser.tab.h
 	flex parser.l
 
-parser.tab.c parser.tab.h: parser.y func.h linkedlist.h object.h verticeList.h faceList.h numList.h window.h
+parser.tab.c parser.tab.h: parser.y main.h func.h linkedlist.h object.h verticeList.h faceList.h numList.h window.h
 	bison -v -d parser.y
 
 parser: lex.yy.c $(OBJS)
@@ -30,7 +30,7 @@ faceList.o: faceList.c faceList.h linkedlist.h numList.h
 object.o: object.c object.h linkedlist.h
 	gcc $(CFLAGS) -c object.c
 
-window.o: window.c window.h
+window.o: window.c window.h main.h linkedlist.h
 	gcc $(CFLAGS) `pkg-config --cflags gtk+-2.0` -c window.c
 
 clean:
