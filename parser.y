@@ -275,7 +275,7 @@ int main(int argc, char **argv)
   printf("Total Vertice numbers: %lu Mb\n",calcSizeSimpleVerticeList((size_t)v_num)/(1024*1024));
 
   if(pFlags & PFLAG_STDOUT) {
-    doGlVertexList(objectList,1.0f,doVertex,doFaceSize, doEndList);
+    doGlVertexList(objectList,paramScale,doVertex,doFaceSize, doEndList);
   }
 
   if(pFlags & PFLAG_GUI) {

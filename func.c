@@ -32,6 +32,7 @@ int parseParams(const int argc, char **argv)
 {
   int i=0;
   pFlags = 0;
+  paramScale = 1.0f;
   while(i<argc) {
     
     if(strncmp("-stdin",argv[i], 6)==0)
@@ -47,7 +48,6 @@ int parseParams(const int argc, char **argv)
       {
 	i++;
 	paramScale = strtod(argv[i],NULL);
-	printf("Scale: %f\n", paramScale);
       }
     
     if(strncmp("-stdout",argv[i], 7)==0)

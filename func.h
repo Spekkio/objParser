@@ -23,5 +23,6 @@
 #define PFLAG_FILE   (1<<3)
 
 extern unsigned int pFlags;
+extern double paramScale;
 
 int parseParams(const int argc, char **argv);
