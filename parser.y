@@ -251,9 +251,10 @@ void doGlVertexList(linkedList * objList, const double scale, void (*doVertex) (
     objectListNode = getNextLinkedListNode(objectListNode);
     newObject = 1; /*mark flag variable that we are working on a new object*/
     i++;
-
+    /*
     if((pFlags & PFLAG_GUI) && !(pFlags & PFLAG_STDOUT))
       printf("Loading: %.1f%%\n",((double)i/(double)n)*100.0f);
+    */
   }
   doEndList();
   /*printf("glEnd();\n\n");*/
