@@ -236,9 +236,10 @@ void doGlVertexList(linkedList * objList, const double scale, void (*doVertex) (
 	b=0;
 	while(b<nfaces) {
 	  fdata = getVerticeNumListData(verticeNumListNode);
-	  tempSimpleVertice = simpleVerticeList[*fdata-1];
-	  doVertex(tempSimpleVertice.x*scale, tempSimpleVertice.y*scale, tempSimpleVertice.z*scale);
-
+	  if(*fdata<=vertCounter) {
+	    tempSimpleVertice = simpleVerticeList[*fdata-1];
+	    doVertex(tempSimpleVertice.x*scale, tempSimpleVertice.y*scale, tempSimpleVertice.z*scale);
+	  }
 	  verticeNumListNode = getNextLinkedListNode(verticeNumListNode);
 	  b++;
 	}
