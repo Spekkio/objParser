@@ -10,7 +10,7 @@ parser.tab.c parser.tab.h: parser.y main.h func.h linkedlist.h object.h verticeL
 	bison -v -d parser.y
 
 parser: lex.yy.c $(OBJS)
-	gcc $(CFLAGS) -Wno-unused-function -Wno-error=unused-function `pkg-config --cflags gtk+-2.0` -o $@ parser.tab.c lex.yy.c $(OBJS) -lfl `pkg-config --libs gtk+-2.0` -lGL -lGLU -lX11 -lpng
+	gcc $(CFLAGS) -Wno-unused-function -Wno-error=unused-function `pkg-config --cflags sdl gl glu glew` -o $@ parser.tab.c lex.yy.c $(OBJS) -lfl `pkg-config --libs sdl gl glu glew` -lm
 
 func.o: func.c func.h
 	gcc $(CFLAGS) -c func.c
@@ -31,7 +31,7 @@ object.o: object.c object.h linkedlist.h
 	gcc $(CFLAGS) -c object.c
 
 window.o: window.c window.h main.h linkedlist.h
-	gcc $(CFLAGS) `pkg-config --cflags gtk+-2.0` -c window.c
+	gcc $(CFLAGS) `pkg-config --cflags sdl gl glu glew` -c window.c
 
 simpleVerticeList.o: simpleVerticeList.c simpleVerticeList.h
 	gcc $(CFLAGS) -c simpleVerticeList.c

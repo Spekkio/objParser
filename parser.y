@@ -281,7 +281,8 @@ int main(int argc, char **argv)
   }
 
   if(pFlags & PFLAG_GUI) {
-    init_window(argc, argv);
+    /*init_window(argc, argv);*/
+    initSDL();
   }
 
   /*Free the simple Vertice list*/
