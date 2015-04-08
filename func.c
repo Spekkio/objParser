@@ -18,11 +18,15 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "func.h"
 
 unsigned int pFlags;
+
+/*scaling parameter from command line*/
+double paramScale;
 
 int parseParams(const int argc, char **argv)
 {
@@ -37,6 +41,13 @@ int parseParams(const int argc, char **argv)
     else if(strncmp("-f",argv[i], 6)==0)
       {
 	pFlags = pFlags | PFLAG_FILE;
+      }
+
+    if(strncmp("-scale",argv[i], 6)==0)
+      {
+	i++;
+	paramScale = strtod(argv[i],NULL);
+	printf("Scale: %f\n", paramScale);
       }
     
     if(strncmp("-stdout",argv[i], 7)==0)
