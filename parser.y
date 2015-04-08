@@ -26,6 +26,7 @@
 #include "numList.h"
 #include "window.h"
 #include "func.h"
+#include "simpleVerticeList.h"
 
   #define ERROR_STR_MAX 256
   size_t ERROR_STR_N = ERROR_STR_MAX;
@@ -49,6 +50,7 @@
   
   vertice tempVertice;
   vertice * tempVerticePtr;
+  struct simpleVertice tempSimpleVertice;
   
   int firstFace;
 
@@ -100,10 +102,15 @@ MTLLIB STRING { /*printf("Load Material library: %s\n", $2);*/ }
   printf("Vertex: %f %f %f\n",$2,$3,$4);
   */
 
-  tempVertice.x = $2;
-  tempVertice.y = $3;
-  tempVertice.z = $4;
+  tempVertice.x = tempSimpleVertice.x = $2;
+  tempVertice.y = tempSimpleVertice.y = $3;
+  tempVertice.z = tempSimpleVertice.z = $4;
   tempVertice.verticeNumber = v_num;
+
+  /*Add the Vertice to an normal indexed vector*/
+  /*Where the index number+1 == face number for faster loading*/
+  /*simpleVerticeList[facenumber-1]*/
+  addVertice(&tempSimpleVertice);
 
   if(objectListNode!=0) {
     vertices = getVerticeList(objectListNode);
@@ -193,7 +200,7 @@ void doEndList(void)
   printf("glEnd();\n\n");
 }
 
-void doGlVertexList(linkedList * objList, double scale, void (*doVertex) (const double x, const double y, const double z), void (doFaceSize) (const unsigned int n), void (*doEndList) (void))
+void doGlVertexList(linkedList * objList, const double scale, void (*doVertex) (const double x, const double y, const double z), void (doFaceSize) (const unsigned int n), void (*doEndList) (void))
 {
   unsigned long int * fdata;
   unsigned int i,n,nums,a,nfaces,b;
@@ -222,20 +229,22 @@ void doGlVertexList(linkedList * objList, double scale, void (*doVertex) (const 
 	    {
 	      doEndList();
 	    }
-	  
 	  doFaceSize(nfaces);
-	  /*
-	  */
 	}
 	/*printf("Node #%u of %u = %u\n",getIndexOfNode(facesListNode), nums, nfaces);*/
 	verticeNumListNode = getFirstNode(facesNumList);
 	b=0;
 	while(b<nfaces) {
 	  fdata = getVerticeNumListData(verticeNumListNode);
+	  /*
 	  verticesListNode = getLinkedListNodeByVerticeNumber(vertices, *fdata);
 	  tempVerticePtr = getVerticeData(verticesListNode);
-
+	  */
+	  tempSimpleVertice = simpleVerticeList[*fdata-1];
+	  /*
 	  doVertex(tempVerticePtr->x*scale, tempVerticePtr->y*scale, tempVerticePtr->z*scale);
+	  */
+	  doVertex(tempSimpleVertice.x*scale, tempSimpleVertice.y*scale, tempSimpleVertice.z*scale);
 
 	  verticeNumListNode = getNextLinkedListNode(verticeNumListNode);
 	  b++;
@@ -260,6 +269,7 @@ void doGlVertexList(linkedList * objList, double scale, void (*doVertex) (const 
 int main(int argc, char **argv)
 {
   objectList = createNewObjectList();
+  allocateSimpleVerticeList();
 
   if(parseParams(argc, argv))
     {
@@ -267,6 +277,7 @@ int main(int argc, char **argv)
     }
 
   yyparse();
+  printf("Total Vertice numbers: %lu Mb\n",calcSizeSimpleVerticeList((size_t)v_num)/(1024*1024));
 
   if(pFlags & PFLAG_STDOUT) {
     doGlVertexList(objectList,1.0f,doVertex,doFaceSize, doEndList);
@@ -275,7 +286,11 @@ int main(int argc, char **argv)
   if(pFlags & PFLAG_GUI) {
     init_window(argc, argv);
   }
-  
+
+  /*Free the simple Vertice list*/
+  freeVerticeList();
+
+  /*Free the Linked list*/
   freeList(objectList);
 
   return 0;
