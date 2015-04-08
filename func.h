@@ -17,9 +17,10 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#define PFLAG_STDIN  1
-#define PFLAG_GUI    2
-#define PFLAG_STDOUT 4
+#define PFLAG_STDIN  (1<<0)
+#define PFLAG_GUI    (1<<1)
+#define PFLAG_STDOUT (1<<2)
+#define PFLAG_FILE   (1<<3)
 
 extern unsigned int pFlags;
 

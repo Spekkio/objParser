@@ -29,23 +29,27 @@ int parseParams(const int argc, char **argv)
   int i=0;
   pFlags = 0;
   while(i<argc) {
-
-    if(strncmp("--stdin",argv[i], 7)==0)
+    
+    if(strncmp("-stdin",argv[i], 6)==0)
       {
 	pFlags = pFlags | PFLAG_STDIN;
       }
-
-    if(strncmp("--stdout",argv[i], 8)==0)
+    else if(strncmp("-f",argv[i], 6)==0)
+      {
+	pFlags = pFlags | PFLAG_FILE;
+      }
+    
+    if(strncmp("-stdout",argv[i], 7)==0)
       {
 	pFlags = pFlags | PFLAG_STDOUT;
       }
 
-    if(strncmp("--gui",argv[i], 5)==0)
+    if(strncmp("-gui",argv[i], 4)==0)
       {
 	pFlags = pFlags | PFLAG_GUI;
       }
 
-    if(strncmp("--version",argv[i], 9)==0)
+    if(strncmp("-version",argv[i], 8)==0)
       {
 	return 1;
       }
