@@ -27,6 +27,7 @@
 #include <string.h>
 
 #include "linkedlist.h"
+#include "func.h"
 #include "main.h"
 
 #define X_WIDTH 800
@@ -206,7 +207,7 @@ void glxSetup()
   loadingObj = 1;
   glObject = glGenLists(1);
   glNewList(glObject, GL_COMPILE);
-  doGlVertexList(objectList,1.0f,doGlVertex,doGlFaceSize, doGlEndList);
+  doGlVertexList(objectList,paramScale,doGlVertex,doGlFaceSize, doGlEndList);
   glEndList();
   loadingObj = 0;
 
