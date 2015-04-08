@@ -272,7 +272,9 @@ int main(int argc, char **argv)
     }
 
   yyparse();
+  /*
   printf("Total Vertice numbers: %lu Mb\n",calcSizeSimpleVerticeList((size_t)v_num)/(1024*1024));
+  */
 
   if(pFlags & PFLAG_STDOUT) {
     doGlVertexList(objectList,paramScale,doVertex,doFaceSize, doEndList);
