@@ -18,24 +18,49 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-void printglVertex3f(const float a, const float b, const float c)
-{
-  printf("glVertex3f(%f, %f, %f);\n",a,b,c);
-}
+#include "func.h"
+
+unsigned int pFlags;
+
+/*scaling parameter from command line*/
+double paramScale;
 
 int parseParams(const int argc, char **argv)
 {
   int i=0;
+  pFlags = 0;
+  paramScale = 1.0f;
   while(i<argc) {
-
-    if(strncmp("--glvertex",argv[i], 10)==0)
+    
+    if(strncmp("-stdin",argv[i], 6)==0)
       {
-	printf("use glvert\n");
+	pFlags = pFlags | PFLAG_STDIN;
+      }
+    else if(strncmp("-f",argv[i], 6)==0)
+      {
+	pFlags = pFlags | PFLAG_FILE;
       }
 
-    if(strncmp("--version",argv[i], 9)==0)
+    if(strncmp("-scale",argv[i], 6)==0)
+      {
+	i++;
+	paramScale = strtod(argv[i],NULL);
+      }
+    
+    if(strncmp("-stdout",argv[i], 7)==0)
+      {
+	pFlags = pFlags | PFLAG_STDOUT;
+      }
+
+    if(strncmp("-gui",argv[i], 4)==0)
+      {
+	pFlags = pFlags | PFLAG_GUI;
+      }
+
+    if(strncmp("-version",argv[i], 8)==0)
       {
 	return 1;
       }

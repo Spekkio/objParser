@@ -24,6 +24,9 @@
 #include "verticeList.h"
 #include "faceList.h"
 #include "numList.h"
+#include "window.h"
+#include "func.h"
+#include "simpleVerticeList.h"
 
   #define ERROR_STR_MAX 256
   size_t ERROR_STR_N = ERROR_STR_MAX;
@@ -47,6 +50,7 @@
   
   vertice tempVertice;
   vertice * tempVerticePtr;
+  struct simpleVertice tempSimpleVertice;
   
   int firstFace;
 
@@ -98,10 +102,15 @@ MTLLIB STRING { /*printf("Load Material library: %s\n", $2);*/ }
   printf("Vertex: %f %f %f\n",$2,$3,$4);
   */
 
-  tempVertice.x = $2;
-  tempVertice.y = $3;
-  tempVertice.z = $4;
+  tempVertice.x = tempSimpleVertice.x = $2;
+  tempVertice.y = tempSimpleVertice.y = $3;
+  tempVertice.z = tempSimpleVertice.z = $4;
   tempVertice.verticeNumber = v_num;
+
+  /*Add the Vertice to an normal indexed vector*/
+  /*Where the index number+1 == face number for faster loading*/
+  /*simpleVerticeList[facenumber-1]*/
+  addVertice(&tempSimpleVertice);
 
   if(objectListNode!=0) {
     vertices = getVerticeList(objectListNode);
@@ -160,7 +169,38 @@ void storeFace(face_t number)
 
 }
 
-void printGlVertex3fList(linkedList * objList, double scale)
+void doVertex(const double x, const double y, const double z)
+{
+  printf("glVertex3f(%f,%f,%f);\n",x,y,z);
+}
+
+void doFaceSize(const unsigned int nfaces)
+{
+  switch(nfaces) {
+  case 1:
+    printf("glBegin(GL_POINTS);\n");
+    break;
+  case 2:
+    printf("glBegin(GL_LINES);\n");
+    break;
+  case 3:
+    printf("glBegin(GL_TRIANGLES);\n");
+    break;
+  case 4:
+    printf("glBegin(GL_QUADS);\n");
+    break;
+  default:
+    printf("glBegin(GL_POLYGON);\n");
+    break;
+  }
+}
+
+void doEndList(void)
+{ 
+  printf("glEnd();\n\n");
+}
+
+void doGlVertexList(linkedList * objList, const double scale, void (*doVertex) (const double x, const double y, const double z), void (doFaceSize) (const unsigned int n), void (*doEndList) (void))
 {
   unsigned long int * fdata;
   unsigned int i,n,nums,a,nfaces,b;
@@ -171,6 +211,7 @@ void printGlVertex3fList(linkedList * objList, double scale)
   objectListNode = getFirstNode(objList);
   i=0;
   while(i<n) {
+
     if(objectListNode != 0) {
       vertices = getVerticeList(objectListNode);
       faces = getFacesList(objectListNode);
@@ -186,34 +227,19 @@ void printGlVertex3fList(linkedList * objList, double scale)
 	  newObject = 0; /* reset flag variable */
 	  if(vNumChange != 0)
 	    {
-	      printf("glEnd();\n\n");
+	      doEndList();
 	    }
-	  switch(nfaces) {
-	  case 1:
-	    printf("glBegin(GL_POINTS);\n");
-	    break;
-	  case 2:
-	    printf("glBegin(GL_LINES);\n");
-	    break;
-	  case 3:
-	    printf("glBegin(GL_TRIANGLES);\n");
-	    break;
-	  case 4:
-	    printf("glBegin(GL_QUADS);\n");
-	    break;
-	  default:
-	    printf("glBegin(GL_POLYGON);\n");
-	    break;
-	  }
+	  doFaceSize(nfaces);
 	}
 	/*printf("Node #%u of %u = %u\n",getIndexOfNode(facesListNode), nums, nfaces);*/
 	verticeNumListNode = getFirstNode(facesNumList);
 	b=0;
 	while(b<nfaces) {
 	  fdata = getVerticeNumListData(verticeNumListNode);
-	  verticesListNode = getLinkedListNodeByVerticeNumber(vertices, *fdata);
-	  tempVerticePtr = getVerticeData(verticesListNode);
-	  printf("glVertex3f(%f,%f,%f);\n",tempVerticePtr->x*scale,tempVerticePtr->y*scale,tempVerticePtr->z*scale);
+	  if(*fdata<=vertCounter) {
+	    tempSimpleVertice = simpleVerticeList[*fdata-1];
+	    doVertex(tempSimpleVertice.x*scale, tempSimpleVertice.y*scale, tempSimpleVertice.z*scale);
+	  }
 	  verticeNumListNode = getNextLinkedListNode(verticeNumListNode);
 	  b++;
 	}
@@ -226,22 +252,43 @@ void printGlVertex3fList(linkedList * objList, double scale)
     objectListNode = getNextLinkedListNode(objectListNode);
     newObject = 1; /*mark flag variable that we are working on a new object*/
     i++;
+    /*
+    if((pFlags & PFLAG_GUI) && !(pFlags & PFLAG_STDOUT))
+      printf("Loading: %.1f%%\n",((double)i/(double)n)*100.0f);
+    */
   }
-  printf("glEnd();\n\n");
+  doEndList();
+  /*printf("glEnd();\n\n");*/
 }
 
 int main(int argc, char **argv)
 {
   objectList = createNewObjectList();
+  allocateSimpleVerticeList();
 
   if(parseParams(argc, argv))
     {
       return 0;
     }
-  yyparse();
 
-  printGlVertex3fList(objectList,1.0f);
-  
+  yyparse();
+  /*
+  printf("Total Vertice numbers: %lu Mb\n",calcSizeSimpleVerticeList((size_t)v_num)/(1024*1024));
+  */
+
+  if(pFlags & PFLAG_STDOUT) {
+    doGlVertexList(objectList,paramScale,doVertex,doFaceSize, doEndList);
+  }
+
+  if(pFlags & PFLAG_GUI) {
+    /*init_window(argc, argv);*/
+    initSDL();
+  }
+
+  /*Free the simple Vertice list*/
+  freeVerticeList();
+
+  /*Free the Linked list*/
   freeList(objectList);
 
   return 0;
