@@ -10,9 +10,12 @@ Display object in a window (Using SDL), control using W,A,S,D and Q,E for up and
 
 ## Millennium Falcon example
 
+Millennium Falcon model rendered in Blender
 ![Millennium Falcon](http://vps.spekkio.se/bilder/falcon_render.jpg "Millennium Falcon Rendered in Blender")
 
-This loaded into objParser with the -gui parameter, currently no textures or colors.
+This is loaded into objParser with the -gui parameter, currently no textures or colors.
+
+     bzip2 -dc Falcon_BlendSwap.obj.bz2 | ./parser -gui
 
 ![Millennium Falcon OpenGL](http://vps.spekkio.se/bilder/falcon.gif "Millennium Falcon implemented in OpenGL c code")
 
