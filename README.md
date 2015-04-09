@@ -2,16 +2,24 @@
 
 Convert a Blender object (Wavefront .obj file) into c code. Currently the program reads from stdin and prints to stdout like this
 
-    ./parser < cube.obj > cube.code
+    ./parser -stdout < cube.obj > cube.code
 
-## Spaceship example
+Display object in a window (Using SDL), control using W,A,S,D and Q,E for up and down movement. Hold left mouse button down to look around.
 
-![Spaceship](http://vps.spekkio.se/bilder/ship.png "Spaceship Rendered in Blender")
+    ./parser -gui < cube.obj
 
-This was exported to c code and implemented into a program (I used [sdltest](https://github.com/Spekkio/sdltest)), currently no textures or colors.
+## Millennium Falcon example
 
-![Spaceship OpenGL](http://vps.spekkio.se/bilder/spaceship.gif "Spaceship implemented in OpenGL c code")
-<a href="https://www.youtube.com/watch?v=GpCKgM7oZ1s">Youtube Video</a>
+![Millennium Falcon](http://vps.spekkio.se/bilder/falcon_render.jpg "Millennium Falcon Rendered in Blender")
+
+This loaded into objParser with the -gui parameter, currently no textures or colors.
+
+![Millennium Falcon OpenGL](http://vps.spekkio.se/bilder/falcon.gif "Millennium Falcon implemented in OpenGL c code")
+
+<a href="https://www.youtube.com/watch?v=9wKkcZERKmM">Youtube Video</a>
+
+Millennium Falcon model by KuhnIndustries
+<a href="http://www.blendswap.com/blends/view/48469">http://www.blendswap.com/blends/view/48469</a>
 
 ## Simple cube example
 
@@ -40,7 +48,7 @@ For example, make a simple cube in Blender and export it to cube.obj
 
 Convert it into c-code
 
-    ./parser < cube.obj
+    ./parser -stdout < cube.obj
 
 The output will look like this
 
