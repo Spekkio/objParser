@@ -88,3 +88,11 @@ glEnd();
 
 * Handle Textures, Colors, Normals, .mtl files, etc.
 * Scriptable outputs using LUA, to support VBO output and whatever.
+
+BUGS
+
+1. The character '/' Forward slash can be used in strings, not supported by the parser. Probably more characters can be used.
+
+2. in parser.y, facenumberlist NUMBER SLASH NUMBER doesn't use the second number.
+For example a face definition like this is not handled.
+    f 2616/5 711/11 712/12 713/13 714/14 715/15 716/16 717/17 718/18 719/19 720/20 721/21 722/22 723/23 724/24 725/25 726/26 727/27 728/28 729/29 730/30 731/31 732/32 733/33 734/34 735/35 736/36 737/37 2618/38
