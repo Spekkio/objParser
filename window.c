@@ -575,7 +575,7 @@ int initGL(void)
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   aspect_ratio = 800.0f/600.0f;
-  gluPerspective(70.0, aspect_ratio, 1.0, 500.0);
+  gluPerspective(70.0, aspect_ratio, 0.001, 500.0);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
