@@ -89,7 +89,7 @@ glEnd();
 * Handle Textures, Colors, Normals, .mtl files, etc.
 * Scriptable outputs using LUA, to support VBO output and whatever.
 
-BUGS
+### BUGS
 
 1. The character '/' Forward slash can be used in strings, not supported by the parser. Probably more characters can be used.
 
