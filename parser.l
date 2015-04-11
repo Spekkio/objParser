@@ -66,13 +66,14 @@ extern unsigned int line;
 "trace_obj"  { return RAY_TRACE; /*TODO*/ }
 "ctech"      { return CURVE_APPROX; /*TODO*/ }
 "stech"      { return SURFACE_APPROX; /*TODO*/ }
+"/"          { return SLASH; }
 
 [-]{0,1}[0-9.]+      { yylval.number = atof(yytext); return NUMBER; }
 [A-Za-z0-9\._\-()]+  { yylval.string = yytext; return STRING; }
 #+.*\n               { line++; /*Comment*/ }
 \n                   { line++; return EOL; }
 [ \t\r\f\v]          { }
-.                    { printf("Unknown: %s\n",yytext); }
+.                    { fprintf(stderr,"Unknown: %s\n",yytext); }
 
 %%
 /*

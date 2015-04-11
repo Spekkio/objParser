@@ -99,6 +99,7 @@
 %token RAY_TRACE
 %token CURVE_APPROX
 %token SURFACE_APPROX
+%token SLASH
 %token EOL
 %token <number> NUMBER
 %token <string> STRING
@@ -153,18 +154,20 @@ facenumberlist:
 {
   storeFace((face_t)$2);
 }
-| facenumberlist NUMBER "/" NUMBER
+| facenumberlist NUMBER SLASH NUMBER SLASH NUMBER
 { 
   /**
    * @todo this needs to be done better.
    */
+  print_warning("NUMBER UNHANDLED #/#/#",line);
   storeFace((face_t)$2);
 }
-| facenumberlist NUMBER "/" NUMBER "/" NUMBER
+| facenumberlist NUMBER SLASH NUMBER
 { 
   /**
    * @todo this needs to be done better.
    */
+  print_warning("NUMBER UNHANDLED #/#",line);
   storeFace((face_t)$2);
 }
 ;
