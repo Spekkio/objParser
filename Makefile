@@ -37,5 +37,5 @@ simpleVerticeList.o: simpleVerticeList.c simpleVerticeList.h
 	gcc $(CFLAGS) -c simpleVerticeList.c
 
 clean:
-	rm -rf parser lex.yy.c bparser parser.tab.c parser.tab.h *~ \#*\# *.o
+	rm -rf parser lex.yy.c bparser parser.tab.c parser.tab.h *~ \#*\# *.o core
 
