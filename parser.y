@@ -68,7 +68,7 @@
 %token NORMAL
 %token TEXTURE
 %token OBJECT
-%token SETTING
+%token SMOOTH
 %token FACE
 %token MTLLIB
 %token USEMTL
@@ -126,8 +126,8 @@ MTLLIB STRING { /*printf("Load Material library: %s\n", $2);*/ }
 | FACE facenumberlist { firstFace = 1; /*printf("face\n");*/ /*printf("Face(4) %f %f %f\n",$2,$3,$4);*/ }
 | ELL NUMBER NUMBER { /**/ }
 | TEXTURE NUMBER NUMBER {   }
-| SETTING STRING { /*printf("Setting: %s\n",$2);*/ }
-| SETTING NUMBER { /*printf("Setting: %s\n",$2);*/ }
+| SMOOTH STRING { /*printf("Setting: %s\n",$2);*/ }
+| SMOOTH NUMBER { /*printf("Setting: %s\n",$2);*/ }
 ;
 
 facenumberlist: 

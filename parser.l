@@ -30,7 +30,7 @@ extern unsigned int line;
 "vn"      { return NORMAL; }
 "vt"      { return TEXTURE; }
 "o"       { return OBJECT; }
-"s"       { return SETTING; }
+"s"       { return SMOOTH; }
 "f"       { return FACE; }
 "l"       { return ELL; }
 "mtllib"  { return MTLLIB; }
