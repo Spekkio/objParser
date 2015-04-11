@@ -72,9 +72,34 @@
 %token FACE
 %token MTLLIB
 %token USEMTL
-%token ELL
+%token V_PARAMETER
+%token CS_CURVE
+%token DEGREE
+%token BASIS_MATRIX
+%token STEP_SIZE
+%token POINT
+%token LINE
+%token CURVE
+%token CURVE2
+%token SURFACE
+%token PARAMETER
+%token TRIM
+%token HOLE
+%token S_CURVE
+%token S_POINT
+%token END
+%token CONNECT
+%token GROUP
+%token MERGE
+%token BEVEL
+%token COLOR_INTERP
+%token DISSOLVE_INTERP
+%token L_DETAIL
+%token SHADOW_CAST
+%token RAY_TRACE
+%token CURVE_APPROX
+%token SURFACE_APPROX
 %token EOL
-%token SLASH
 %token <number> NUMBER
 %token <string> STRING
 
@@ -85,22 +110,15 @@ list:
 ;
 
 line:
-MTLLIB STRING { /*printf("Load Material library: %s\n", $2);*/ }
-| USEMTL STRING { /*printf("Use Material: %s\n",$2);*/ }
-| USEMTL { /*printf("Use Material: %s\n",$2);*/ }
+MTLLIB STRING { print_warning("MTLLIB",line); }
+| USEMTL STRING { print_warning("USEMTL",line); }
+| USEMTL { print_warning("USEMTL",line); }
 | OBJECT STRING {
-  /*
-  printf("New object: %s\n", $2);
-  */
   objectListNode = addNewNode(objectList);
  }
 | VERT NUMBER NUMBER NUMBER { 
 
   v_num++;
-  /*
-  printf("#%u ",v_num);
-  printf("Vertex: %f %f %f\n",$2,$3,$4);
-  */
 
   tempVertice.x = tempSimpleVertice.x = $2;
   tempVertice.y = tempSimpleVertice.y = $3;
@@ -123,23 +141,31 @@ MTLLIB STRING { /*printf("Load Material library: %s\n", $2);*/ }
   /*List of faces comes after vertices*/
   firstFace = 1;
  }
-| FACE facenumberlist { firstFace = 1; /*printf("face\n");*/ /*printf("Face(4) %f %f %f\n",$2,$3,$4);*/ }
-| ELL NUMBER NUMBER { /**/ }
-| TEXTURE NUMBER NUMBER {   }
-| SMOOTH STRING { /*printf("Setting: %s\n",$2);*/ }
-| SMOOTH NUMBER { /*printf("Setting: %s\n",$2);*/ }
+| FACE facenumberlist { firstFace = 1; }
+| LINE facenumberlist { firstFace = 1; }
+| TEXTURE NUMBER NUMBER { print_warning("TEXTURE",line); }
+| SMOOTH STRING { print_warning("SMOOTH",line); }
+| SMOOTH NUMBER { print_warning("SMOOTH",line); }
 ;
 
 facenumberlist: 
 | facenumberlist NUMBER
 {
   storeFace((face_t)$2);
-  /*printf("%lu ", (face_t)$2);*/
 }
-| facenumberlist NUMBER SLASH NUMBER
+| facenumberlist NUMBER "/" NUMBER
 { 
+  /**
+   * @todo this needs to be done better.
+   */
   storeFace((face_t)$2);
-  /*printf("%lu(%lu) ", (face_t)$2, (face_t)$4);*/
+}
+| facenumberlist NUMBER "/" NUMBER "/" NUMBER
+{ 
+  /**
+   * @todo this needs to be done better.
+   */
+  storeFace((face_t)$2);
 }
 ;
 

@@ -28,6 +28,13 @@ unsigned int pFlags;
 /*scaling parameter from command line*/
 double paramScale;
 
+void print_warning(const char * str, const unsigned int line)
+{
+  if(pFlags & PFLAG_WARNINGS) {
+    fprintf(stderr,"Warning: %s @ line %u\n", str, line+1);
+  }
+}
+
 int parseParams(const int argc, char **argv)
 {
   int i=0;
@@ -58,6 +65,11 @@ int parseParams(const int argc, char **argv)
     if(strncmp("-gui",argv[i], 4)==0)
       {
 	pFlags = pFlags | PFLAG_GUI;
+      }
+
+    if(strncmp("-w",argv[i], 2)==0)
+      {
+	pFlags = pFlags | PFLAG_WARNINGS;
       }
 
     if(strncmp("-version",argv[i], 8)==0)
