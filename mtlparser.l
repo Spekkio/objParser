@@ -17,6 +17,10 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+/** 
+ * @todo read http://paulbourke.net/dataformats/mtl/
+ */
+
 %{
 #include "mtlparser.tab.h"
 
