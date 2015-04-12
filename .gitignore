@@ -12,3 +12,8 @@ parser
 core
 *.bz2
 *.tar
+mtlparser
+mtlparser.output
+mtlparser.tab.c
+mtlparser.tab.h
+mtlparser.yy.c
